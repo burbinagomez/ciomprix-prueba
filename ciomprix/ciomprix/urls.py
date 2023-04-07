@@ -16,7 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from persona import views as persona_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('personas/', persona_views.ListarPersonasAPIView.as_view(), name='persona-list'),
+    path('personas/<int:id>/', persona_views.DetallePersonaAPIView.as_view(), name='persona-detail'),
+    path('personas/create', persona_views.CrearPersonaAPIView.as_view(), name='persona-created'),
+    path('personas/<int:id>/update', persona_views.ActualizarPersonaAPIView.as_view(), name='persona-update'),
+    path('personas/<int:id>/delete', persona_views.EliminarPersonaAPIView.as_view(), name='persona-delete'),
 ]
