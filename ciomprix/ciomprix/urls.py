@@ -22,6 +22,7 @@ from tarea import views as tarea_views
 urlpatterns = [
     path("admin/", admin.site.urls),
     #Persona
+    path('login/', persona_views.InicioSesion.as_view(), name='inicio-sesion'),
     path('personas/', persona_views.ListarPersonasAPIView.as_view(), name='persona-list'),
     path('personas/<int:id>/', persona_views.DetallePersonaAPIView.as_view(), name='persona-detail'),
     path('personas/create', persona_views.CrearPersonaAPIView.as_view(), name='persona-created'),
