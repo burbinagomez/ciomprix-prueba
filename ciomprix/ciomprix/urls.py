@@ -17,12 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from persona import views as persona_views
+from tarea import views as tarea_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    #Persona
     path('personas/', persona_views.ListarPersonasAPIView.as_view(), name='persona-list'),
     path('personas/<int:id>/', persona_views.DetallePersonaAPIView.as_view(), name='persona-detail'),
     path('personas/create', persona_views.CrearPersonaAPIView.as_view(), name='persona-created'),
     path('personas/<int:id>/update', persona_views.ActualizarPersonaAPIView.as_view(), name='persona-update'),
     path('personas/<int:id>/delete', persona_views.EliminarPersonaAPIView.as_view(), name='persona-delete'),
+    #Tareas
+    path('tareas/', tarea_views.ListarTareaAPIView.as_view(), name='tarea-list'),
+    path('tareas/<int:id>/', tarea_views.DetalleTareaAPIView.as_view(), name='tarea-detail'),
+    path('tareas/create', tarea_views.CrearTareaAPIView.as_view(), name='tarea-created'),
+    path('tareas/<int:id>/update', tarea_views.ActualizarTareaAPIView.as_view(), name='tarea-update'),
+    path('tareas/<int:id>/delete', tarea_views.EliminarTareaAPIView.as_view(), name='tarea-delete'),
 ]
