@@ -11,11 +11,12 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .serializers import PersonaSerializer
+from .permissions import IsOwnerOrAdminOrReadOnly
+from .serializers import PersonaSerializer, CreatePersonaSerializer
 from .models import Persona
 
 class CrearPersonaAPIView(CreateAPIView):
-    serializer_class = PersonaSerializer
+    serializer_class = CreatePersonaSerializer
 
 class ListarPersonasAPIView(ListAPIView):
     queryset = Persona.objects.all()
@@ -31,14 +32,14 @@ class ActualizarPersonaAPIView(UpdateAPIView):
     serializer_class = PersonaSerializer
     lookup_field = 'id'
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOrAdminOrReadOnly]
 
 class EliminarPersonaAPIView(DestroyAPIView):
     queryset = Persona.objects.all()
     serializer_class = PersonaSerializer
     lookup_field = 'id'
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOrAdminOrReadOnly]
 
 class InicioSesion(ObtainAuthToken):
     def post(self, request, *args, **kwargs):

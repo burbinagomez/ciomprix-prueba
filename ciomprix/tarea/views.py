@@ -1,65 +1,40 @@
-# Create your views here.
 from rest_framework.generics import (
     CreateAPIView,
-    ListAPIView,
     RetrieveAPIView,
     UpdateAPIView,
-    DestroyAPIView
-    )
+    DestroyAPIView,
+    ListAPIView,
+)
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .serializers import TareaSerializer
 from .models import Tarea
 
-class CrearTareaAPIView(CreateAPIView):
+
+class TareaAPIView(ListAPIView, 
+                   CreateAPIView, 
+                   RetrieveAPIView, 
+                   UpdateAPIView, 
+                   DestroyAPIView):
     serializer_class = TareaSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    
-
-class ListarTareaAPIView(ListAPIView):
-    queryset = Tarea.objects.all()
-    serializer_class = TareaSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-class DetalleTareaAPIView(RetrieveAPIView):
-    queryset = Tarea.objects.all()
-    serializer_class = TareaSerializer
     lookup_field = 'id'
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-class ActualizarTareaAPIView(UpdateAPIView):
-    queryset = Tarea.objects.all()
-    serializer_class = TareaSerializer
-    lookup_field = 'id'
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-class EliminarTareaAPIView(DestroyAPIView):
-    queryset = Tarea.objects.all()
-    serializer_class = TareaSerializer
-    lookup_field = 'id'
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-class TareasPorUsuario(ListAPIView):
-    serializer_class = TareaSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        id_usuario = self.kwargs['id_usuario']
-        queryset = Tarea.objects.filter(usuario_id=id_usuario)
-        return queryset
-    
-class TareasPorFechaLimite(ListAPIView):
-    serializer_class = TareaSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+        queryset = Tarea.objects.all()
+        id = self.kwargs.get('id')
+        id_usuario = self.kwargs.get('id_persona')
+        fecha_limite = self.kwargs.get('fecha_limite')
 
-    def get_queryset(self):
-        id_usuario = self.kwargs['id_usuario']
-        queryset = Tarea.objects.filter(usuario_id=id_usuario)
+        if id:
+            queryset = queryset.filter(id=id)
+        if id_usuario:
+            queryset = queryset.filter(assigned=id_usuario)
+        if fecha_limite:
+            queryset = queryset.filter(fecha_limite=fecha_limite)
+
         return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

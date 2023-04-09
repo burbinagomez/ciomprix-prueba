@@ -29,9 +29,8 @@ urlpatterns = [
     path('personas/<int:id>/update', persona_views.ActualizarPersonaAPIView.as_view(), name='persona-update'),
     path('personas/<int:id>/delete', persona_views.EliminarPersonaAPIView.as_view(), name='persona-delete'),
     #Tareas
-    path('tareas/', tarea_views.ListarTareaAPIView.as_view(), name='tarea-list'),
-    path('tareas/<int:id>/', tarea_views.DetalleTareaAPIView.as_view(), name='tarea-detail'),
-    path('tareas/create', tarea_views.CrearTareaAPIView.as_view(), name='tarea-created'),
-    path('tareas/<int:id>/update', tarea_views.ActualizarTareaAPIView.as_view(), name='tarea-update'),
-    path('tareas/<int:id>/delete', tarea_views.EliminarTareaAPIView.as_view(), name='tarea-delete'),
+    path('tareas/', tarea_views.TareaAPIView.as_view(), name='tareas'),
+    path('tarea/<int:id>/', tarea_views.TareaAPIView.as_view(), name='tarea'),
+    path('tareas/usuario/<int:id_persona>/', tarea_views.TareaAPIView.as_view(), name='tareas-persona'),
+    path('tareas/fecha/<str:fecha_limite>/', tarea_views.TareaAPIView.as_view(), name='tareas-fecha_limite'),
 ]

@@ -8,4 +8,5 @@ class Tarea(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_limite = models.DateTimeField()
     completada = models.BooleanField(default=False)
-    persona = models.ForeignKey(Persona, on_delete=models.CASCADE, related_name='tareas')
+    owner = models.ForeignKey(Persona, on_delete=models.CASCADE, related_name='owner_tareas')
+    assigned = models.ForeignKey(Persona, on_delete=models.CASCADE, related_name='assigned_tareas')

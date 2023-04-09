@@ -5,3 +5,6 @@ class TareaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tarea
         fields = "__all__"
+        extra_kwargs = {
+            'owner': {'required': False}
+        }
